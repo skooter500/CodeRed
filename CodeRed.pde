@@ -35,6 +35,32 @@ float turretHUDy = 0;
 
 GameObject mouseTurret = null;
 
+AudioPlayer explosionSound;
+AudioPlayer shootSound;
+AudioPlayer backgroundSound;
+
+int gameState = 0;
+Minim minim;//audio context
+
+void splash()
+{
+  background(0);
+  stroke(255, 0, 0); 
+  printText("Code Red", font_size.large, CENTRED, 100);  
+  stroke(255);
+  printText("Programmed by Bryan Duggan", font_size.large, CENTRED, 300);
+  printText("Soundtrack by Darren Fitzpatrick", font_size.large, CENTRED, 400);
+  if (frameCount / 60 % 2 == 0)
+  {
+    printText("Press SPACE to play", font_size.large, CENTRED, height - 100);  
+  }
+  if (checkKey(' '))
+  {
+    gameState = 1;
+    playSound(backgroundSound, true);
+  }
+}
+
 void spawn()
 {
   if (frameCount % 60 == 0)
@@ -48,9 +74,53 @@ void spawn()
   }
 }
 
+void playSound(AudioPlayer sound)
+{
+  playSound(sound, false);
+}
+
+boolean checkKey(int k)
+{
+  if (keys.length >= k) 
+  {
+    return keys[k] || keys[Character.toUpperCase(k)];  
+  }
+  return false;
+}
+
+void playSound(AudioPlayer sound, boolean loop)
+{
+  if (sound == null)
+  {
+    return;
+  }
+  sound.setGain(14);
+  if (!loop)
+  {
+    sound.rewind();
+  }
+  else
+  {
+    sound.loop();
+    if (sound.isPlaying())
+    {
+      return;
+    }
+  }    
+  
+  sound.play(); 
+}
+
 void setup()
 {
   fullScreen();
+  
+  minim = new Minim(this);  
+  
+  explosionSound = minim.loadFile("exp.wav");
+  shootSound = minim.loadFile("shoot.wav");
+  backgroundSound = minim.loadFile("drumbedtrack1.mp3");
+  
   //size(600, 600);
   
   border = 60;    
@@ -145,11 +215,8 @@ void drawStats()
    }
 }
 
-void draw()
+void game()
 {
-  background(0);
-  stroke(0, 255, 255);  
-  
   for(int i = gameObjects.size() - 1 ; i >= 0 ; i --)
   {
     GameObject go = gameObjects.get(i);
@@ -159,6 +226,21 @@ void draw()
   
   drawStats();
   spawn();
+}
+
+void draw()
+{
+  background(0);
+  stroke(0, 255, 255);  
+  
+  switch(gameState)
+  {
+    case 0:
+      splash();
+      break;
+    case 1:
+      game();
+  }   
 }
 
 void mouseClicked()

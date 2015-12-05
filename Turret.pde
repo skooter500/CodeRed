@@ -12,7 +12,7 @@ class Turret extends GameComponent
   
   Turret(GameObject gameObject, boolean hud, color c)
   {
-    super(gameObject);     //<>//
+    super(gameObject);     //<>// //<>//
     this.hud = hud;
     polyLine = new PolyLine(gameObject, c);
     gameObject.addComponent(polyLine);
@@ -66,6 +66,7 @@ class Turret extends GameComponent
           bullet.rot = gameObject.rot;
           gameObjects.add(bullet);
           ellapsed = 0;
+          playSound(shootSound);
         }
         
         if (dist < range)
@@ -78,7 +79,7 @@ class Turret extends GameComponent
   }
   
   void initialize()
-  {
+  { //<>//
     float radius = turretWidth * 0.3f;    //<>//
     int sides = 8;
     float thetaInc = TWO_PI / (float) sides;

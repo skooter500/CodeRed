@@ -35,6 +35,7 @@ class Enemy extends GameComponent
             );
        ex.addComponent(explosion);    
        gameObjects.add(ex);
+       playSound(explosionSound);
        return;
     }
     
