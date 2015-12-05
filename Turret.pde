@@ -4,7 +4,7 @@ class Turret extends GameComponent
   boolean hud;
   
   GameObject enemy;
-  float range = 100.0f;
+  float range = 200.0f;
   int fireRate = 5;
   color c;
   float ellapsed = 0;
