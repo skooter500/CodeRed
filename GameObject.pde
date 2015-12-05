@@ -1,7 +1,7 @@
 class GameObject
 {
     PVector position;
-    PVector look;
+    PVector forward;
     float rot;
     boolean alive;
 
@@ -11,7 +11,7 @@ class GameObject
     {
       components = new ArrayList<GameComponent>();
       position = new PVector();
-      look = new PVector(0, -1);
+      forward = new PVector(0, -1);
       alive = true;
     }
     

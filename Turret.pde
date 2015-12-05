@@ -6,6 +6,9 @@ class Turret extends GameComponent
   GameObject enemy;
   float range = 100.0f;
   int fireRate = 5;
+  color c;
+  float ellapsed = 0;
+  float toPass = 0;
   
   Turret(GameObject gameObject, boolean hud, color c)
   {
@@ -13,6 +16,9 @@ class Turret extends GameComponent
     this.hud = hud;
     polyLine = new PolyLine(gameObject, c);
     gameObject.addComponent(polyLine);
+    this.c = c;
+    toPass = 1.0f / fireRate;
+    ellapsed = toPass;
   }
   
   GameObject searchForEnemy()
@@ -36,7 +42,7 @@ class Turret extends GameComponent
   }
   
   void update()
-  {
+  {    
     if (!hud)
     {
       if (enemy == null)
@@ -48,6 +54,19 @@ class Turret extends GameComponent
         PVector toEnemy = PVector.sub(gameObject.position, enemy.position);
         float dist = PVector.dist(enemy.position, gameObject.position);
         gameObject.rot = atan2(toEnemy.y, toEnemy.x) - HALF_PI;
+        gameObject.forward.x = sin(gameObject.rot);
+        gameObject.forward.y = -cos(gameObject.rot);
+        
+        if (ellapsed > toPass)
+        {
+          GameObject bullet = new GameObject();
+          bullet.addComponent(new Bullet(bullet, gameObject.position.x, gameObject.position.y, range, c));
+          bullet.position.add(PVector.mult(gameObject.forward, 15.0f));
+          bullet.forward = gameObject.forward.get();
+          bullet.rot = gameObject.rot;
+          gameObjects.add(bullet);
+          ellapsed = 0;
+        }
         
         if (dist < range)
         {
@@ -55,6 +74,7 @@ class Turret extends GameComponent
         }                
       }
     }
+    ellapsed += timeDelta;
   }
   
   void initialize()

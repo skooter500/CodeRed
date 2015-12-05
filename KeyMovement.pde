@@ -14,12 +14,12 @@ class KeyMovement extends GameComponent
  
  void update()
  {
-   gameObject.look.x = sin(gameObject.rot);
-   gameObject.look.y = - cos(gameObject.rot);
+   gameObject.forward.x = sin(gameObject.rot);
+   gameObject.forward.y = - cos(gameObject.rot);
    
    if (keys[forward])
    {
-     gameObject.position.add(gameObject.look);
+     gameObject.position.add(gameObject.forward);
    }
       
    if (keys[left])

@@ -10,10 +10,10 @@ class AIMovement extends GameComponent
   
   void update()
   {    
-    gameObject.look.x = sin(gameObject.rot);
-    gameObject.look.y = - cos(gameObject.rot);
+    gameObject.forward.x = sin(gameObject.rot);
+    gameObject.forward.y = - cos(gameObject.rot);
     
-    gameObject.position.add(gameObject.look);
+    gameObject.position.add(gameObject.forward);
     
     if (gameObject.position.x > width - border)
     {
