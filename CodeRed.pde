@@ -25,6 +25,8 @@ float turretWidth = 0;
 float turretHUDx = 0;
 float turretHUDy = 0;
 
+GameObject mouseTurret = null;
+
 void spawn()
 {
   if (frameCount % 60 == 0)
@@ -45,6 +47,10 @@ void setup()
   turretWidth = 60;
   turretHUDx = 20;
   turretHUDy = 0;
+  
+  turretCount[0] = 10;
+  turretCount[1] = 10;
+  turretCount[2] = 10;
       
   GameObject level = new GameObject();
   currentLevel = new Level(level, "level1.txt");
@@ -52,6 +58,8 @@ void setup()
   level.addComponent(currentLevel);
   gameObjects.add(level);
     
+  float startX = turretHUDx + (turretWidth * 0.5f);
+  float gap = turretWidth * 1.5f;
   for(int i = 0 ; i < numTurrets ; i ++)
   {
     // Add the HUD turrents
@@ -59,7 +67,7 @@ void setup()
     
     Turret t = new Turret(tgo, true, turretColors[i]);
     tgo.addComponent(t);
-    tgo.position.x = turretHUDx + (turretWidth * i);
+    tgo.position.x = startX + (gap * i);
     tgo.position.y = height - (border / 2);    
     gameObjects.add(tgo);
   }
@@ -117,11 +125,13 @@ void drawStats()
   
   // Draw the turret stats
   float y = height - 40; 
+  float startX = turretHUDx + (turretWidth);
+  float gap = turretWidth * 1.5f;
    for(int i = 0 ; i < numTurrets ; i ++)
    {
      stroke(turretColors[i]);
-     float x = 60 + (i * 80);
-     printText("x" + turretCount[i], font_size.small, (int)x, (int)y);
+     float x = startX + (i * gap);
+     printText("" + turretCount[i], font_size.small, (int)x, (int)y);
    }
 }
 
@@ -148,10 +158,26 @@ void draw()
   spawn();
 }
 
-void mousePressed()
+void mouseClicked()
 {
+  float startX = turretHUDx;
+  float gap = turretWidth * 1.5f;
+  
   // Check
-  //if (mouseY > 
+  if (mouseY > height - border)
+  {
+    int turretIndex = (int)((mouseX - startX) / gap);  
+    if (turretIndex >= 0 && turretIndex < numTurrets)
+    {
+      println(turretIndex);
+      if (turretCount[turretIndex] > 0)
+      {
+        turretCount[turretIndex] --;
+        mouseTurret = new GameObject();
+        
+      }      
+    }    
+  }
 }
 
 void keyPressed()
