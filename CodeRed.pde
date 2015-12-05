@@ -22,13 +22,13 @@ int[] turretCount = new int[numTurrets];
 color[] turretColors = {purple, blue, red};
 
 float turretWidth = 0;
-float turretHUDStart = 0;
+float turretHUDx = 0;
+float turretHUDy = 0;
 
 void spawn()
 {
   if (frameCount % 60 == 0)
   {
-    println("New enemy");
     GameObject ego = new GameObject();
     ego.addComponent(new Enemy(ego, red)); 
     ego.position = currentLevel.path.get(0).get();
@@ -42,8 +42,10 @@ void setup()
   size(600, 600);
   
   border = 60;    
-    
-  
+  turretWidth = 60;
+  turretHUDx = 20;
+  turretHUDy = 0;
+      
   GameObject level = new GameObject();
   currentLevel = new Level(level, "level1.txt");
   
@@ -57,7 +59,7 @@ void setup()
     
     Turret t = new Turret(tgo, true, turretColors[i]);
     tgo.addComponent(t);
-    tgo.position.x = 40 + (i * 80);
+    tgo.position.x = turretHUDx + (turretWidth * i);
     tgo.position.y = height - (border / 2);    
     gameObjects.add(tgo);
   }
@@ -149,7 +151,7 @@ void draw()
 void mousePressed()
 {
   // Check
-  if (mouseY > 
+  //if (mouseY > 
 }
 
 void keyPressed()

@@ -13,13 +13,13 @@ class Turret extends GameComponent
   
   void initialize()
   {
-    float radius = currentLevel.cellWidth * 0.3f;     //<>//
+    float radius = turretWidth * 0.3f;    //<>//
     int sides = 8;
     float thetaInc = TWO_PI / (float) sides;
     float lastX = 0, lastY = - radius;
     float x, y;
     
-    polyLine.vertices.add(new PVector(0, - currentLevel.cellWidth * 0.4f));  
+    polyLine.vertices.add(new PVector(0, - turretWidth  * 0.4f));  
     polyLine.vertices.add(new PVector(0, - radius));
     
     for (int i = 1 ; i < sides ; i ++)
