@@ -8,7 +8,7 @@ class Level extends GameComponent
   String fileName;
   int[][] board;
   
-  ArrayList<PVector> enemyPath = new ArrayList<PVector>(); 
+  ArrayList<PVector> path = new ArrayList<PVector>(); 
   
   Level(GameObject gameObject, String fileName)
   {
@@ -16,34 +16,103 @@ class Level extends GameComponent
     this.fileName = fileName;
   }
   
-  void calculateEnemyPath()
+  void calculatePath()
   {
-    enemyPath.clear();
+    
     // Search the edges for the start cell
-    boolean found = true;
     startRow = 0;
     startCol = 0;
-    for(startRow = 0 ; startRow < rows ; startRow ++)
+    for(int row = 0 ; row < rows ; row ++)
     {
       if (getCell(row, 0) == 1)
       {
-        found = true;
-        col = 0;
+        startRow = row;
+        startCol = 0;
         break;
       }
       if (getCell(row, cols - 1) == 1)
       {
-        found = true;
-        col = cols - 1;
+        startRow = row;
+        startCol = cols - 1;
         break;
       }
     }
     
+    // Find the base
+    for(int row = 0 ; row < rows ; row ++) //<>//
+    {
+      for(int col = 0 ; col < cols ; col ++)
+      {
+        if (getCell(row, col) == 2)
+        {
+          baseRow = row;
+          baseCol = col;
+        }
+      }
+    }
+    
+    println(baseRow, baseCol);
+    println(startRow, startCol);
+    
     // Now find the path to the end cell
     int row = startRow, col = startCol;
-    while (row != baseRow && col != baseCol)
+    int prevRow = row, prevCol = col;
+    boolean found = false;
+    path.clear();
+    while (! found)
     {
-    }    
+      path.add(cellToScreen(row, col));
+      if ((row == baseRow && col == baseCol) || path.size() == 14)
+      {
+        println("Found!: " + baseRow + " " + baseCol);
+        found = true;
+        continue;
+      }
+      int nextRow = 0, nextCol = 0;
+      // Check which dir is free
+      // Up
+      if (prevRow != row -1 && getCell(row - 1, col) != 0)
+      {
+        nextRow = row - 1;
+        nextCol = col;
+        println("up");
+      }
+      
+      // down
+      if (prevRow != row + 1 && getCell(row + 1, col) != 0)
+      {
+        nextRow = row + 1;
+        nextCol = col; 
+        println("down" + nextRow + " " + nextCol);
+      }
+      
+      // Left
+      if (prevCol != col - 1 && getCell(row, col - 1) != 0)
+      {
+        nextRow = row;
+        nextCol = col - 1;
+        println("left");
+      }
+      
+      // Right //<>//
+      if (prevCol != col + 1 && getCell(row, col + 1) != 0)
+      {
+        nextRow = row;
+        nextCol = col + 1;
+        println("right");
+      }
+      prevRow = row;
+      prevCol = col;
+      row = nextRow;
+      col = nextCol; 
+    }         
+  }
+  
+  PVector cellToScreen(int row, int col)
+  {
+    float x = (cellWidth * 0.5f) + (col * cellWidth);
+    float y = border + (cellWidth * 0.5f) + (row * cellHeight);
+    return new PVector(x, y);
   }
   
   void initialize()
@@ -65,6 +134,7 @@ class Level extends GameComponent
         board[i][j] = lines[i].charAt(j) - '0';
       }
     }
+    calculatePath();
   }
   
   int getCell(int row, int col)
@@ -85,7 +155,7 @@ class Level extends GameComponent
     float x, y;
     x = col * cellWidth;
     y = border + (row * cellHeight);
- //<>//
+
     // Top
     if (getCell(row - 1, col) == 0)
     {
@@ -112,6 +182,14 @@ class Level extends GameComponent
     
   }
   
+  void drawPath()
+  {
+    for(PVector waypoint:path)
+    {
+      ellipse(waypoint.x, waypoint.y, 5, 5);
+    }
+  }
+  
   void render()
   {       
     stroke(red);
@@ -132,5 +210,6 @@ class Level extends GameComponent
         }                
       }
     }
+    drawPath();
   }   
 }

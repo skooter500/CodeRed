@@ -21,6 +21,18 @@ int numTurrets = 3;
 int[] turretCount = new int[numTurrets];
 color[] turretColors = {purple, blue, red};
 
+void spawn()
+{
+  if (frameCount % 60 == 0)
+  {
+    println("New enemy");
+    GameObject ego = new GameObject();
+    ego.addComponent(new Enemy(ego, red)); 
+    ego.position = currentLevel.path.get(0).get();
+    gameObjects.add(ego);
+  }
+}
+
 void setup()
 {
   size(600, 600);
@@ -107,11 +119,11 @@ void drawStats()
    }
 }
 
-
 void draw()
 {
   background(0);
   stroke(0, 255, 255);  
+  
   for(GameObject gameObject:gameObjects)
   {
     gameObject.update();
@@ -119,6 +131,7 @@ void draw()
   }
   
   drawStats();
+  spawn();
 }
 
 void keyPressed()
