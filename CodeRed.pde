@@ -1,4 +1,11 @@
 import ddf.minim.*;
+import ddf.minim.analysis.*;
+import ddf.minim.effects.*;
+import ddf.minim.signals.*;
+import ddf.minim.spi.*;
+import ddf.minim.ugens.*;
+
+import ddf.minim.*;
 import de.ilu.movingletters.*;
 
 float timeDelta = 1.0f / 60.0f; 
@@ -43,7 +50,8 @@ void spawn()
 
 void setup()
 {
-  size(600, 600);
+  fullScreen();
+  //size(600, 600);
   
   border = 60;    
   turretWidth = 60;

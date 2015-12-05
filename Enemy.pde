@@ -4,6 +4,7 @@ class Enemy extends GameComponent
   int currentWaypoint = 0;
   PVector velocity;
   int health;
+  color c;
   
   Enemy(GameObject gameObject, color c)
   {
@@ -11,12 +12,32 @@ class Enemy extends GameComponent
     polyLine = new PolyLine(gameObject, c);
     gameObject.addComponent(polyLine);
     velocity = new PVector();
-    health = 3;
+    health = 10;
+    this.c = c;
     initialize();
   }
   
   void update()
-  {
+  {    
+    // AM I dead!
+    if (health <= 0)
+    {
+       enemies.remove(gameObject);
+       gameObjects.remove(gameObject);      
+       score ++;
+       
+       GameObject ex = new GameObject();
+       Explosion explosion = new Explosion(
+            gameObject
+            , ((PolyLine)gameObject.components.get(0)).vertices
+            , gameObject.position
+            , c
+            );
+       ex.addComponent(explosion);    
+       gameObjects.add(ex);
+       return;
+    }
+    
     PVector toWaypoint = PVector.sub(
       currentLevel.path.get(currentWaypoint)
       , gameObject.position
@@ -36,19 +57,19 @@ class Enemy extends GameComponent
         gameObjects.remove(this.gameObject);
         enemies.remove(this.gameObject);
       }
+      
     }     
   }
   
   void initialize()
   {
-    println("Initialising the enemy");
-    float radius = currentLevel.cellWidth * 0.2f;    
+    float radius = turretWidth * 0.2f;    
     int sides = 4;
     float thetaInc = TWO_PI / (float) sides;
     float lastX = 0, lastY = - radius;
     float x, y;
     
-    polyLine.vertices.add(new PVector(0, - currentLevel.cellWidth * 0.4f));  
+    polyLine.vertices.add(new PVector(0, - turretWidth * 0.4f));  
     polyLine.vertices.add(new PVector(0, - radius));
     
     for (int i = 1 ; i < sides ; i ++)

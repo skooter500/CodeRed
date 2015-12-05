@@ -1,17 +1,19 @@
-class Explosion extends GameObject
+class Explosion extends GameComponent
 {
   ArrayList<PVector> directions = new ArrayList<PVector>();
-  
+  ArrayList<PVector> vertices = new ArrayList<PVector>();
+
   color colour;
   float speed = 1.5f;
 
   float timeDelta = 1.0 / 60.0f;
   float ellapsed = 0;
-  float liveFor = 5.0f;
+  float liveFor = 2.0f;
   
-  Explosion(ArrayList<PVector> vertices, PVector pos, color colour)
+  Explosion(GameObject go, ArrayList<PVector> vertices, PVector pos, color colour)
   {
-    this.position = pos;
+    super(go);
+    this.gameObject.position = pos;
     this.colour = colour;
     for(PVector vertex:vertices)
     {
@@ -24,7 +26,7 @@ class Explosion extends GameObject
         dir.mult(speed);
         directions.add(dir);
     }
-    playSound(explosionSound);
+    //playSound(explosionSound);
   }
 
   void update()
@@ -37,16 +39,16 @@ class Explosion extends GameObject
     ellapsed += timeDelta;
     if (ellapsed > liveFor)
     {
-      alive = false;
+      gameObjects.remove(this.gameObject);
     }
   }
 
-  void display()
+  void render()
   {
    stroke(255);
    pushMatrix(); 
-   translate(position.x, position.y);
-   rotate(theta);
+   translate(gameObject.position.x, gameObject.position.y);
+   rotate(gameObject.rot);
    float alpha = (1.0f - ellapsed / liveFor) * 255.0f;
    stroke(red(colour), green(colour), blue(colour), (int)alpha);
    for (int i = 1 ; i < vertices.size() ; i += 2)

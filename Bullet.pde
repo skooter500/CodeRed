@@ -21,7 +21,7 @@ class Bullet extends GameComponent
     float dist = PVector.dist(gameObject.position, startPos);
     if (dist > range)
     {
-      gameObjects.remove(gameObject);
+      gameObjects.remove(gameObject);     
     }
     
     // Check for collisions with the enemies
@@ -29,10 +29,10 @@ class Bullet extends GameComponent
     {      
       GameObject enemy = enemies.get(i);
       float eDist = PVector.dist(enemy.position, gameObject.position);
-      if (eDist < 10)
+      if (eDist < 20)
       {
-        enemies.remove(enemy);
-        gameObjects.remove(enemy);
+        ((Enemy)enemy.components.get(1)).health --;
+        gameObjects.remove(gameObject);
       }
     }
   }

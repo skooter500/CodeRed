@@ -39,7 +39,7 @@ class Level extends GameComponent
     }
     
     // Find the base
-    for(int row = 0 ; row < rows ; row ++) //<>//
+    for(int row = 0 ; row < rows ; row ++) //<>// //<>//
     {
       for(int col = 0 ; col < cols ; col ++)
       {
@@ -94,7 +94,7 @@ class Level extends GameComponent
         println("left");
       }
       
-      // Right //<>//
+      // Right //<>// //<>//
       if (prevCol != col + 1 && getCell(row, col + 1) != 0)
       {
         nextRow = row;
@@ -111,7 +111,7 @@ class Level extends GameComponent
   PVector cellToScreen(int row, int col)
   {
     float x = (cellWidth * 0.5f) + (col * cellWidth);
-    float y = border + (cellWidth * 0.5f) + (row * cellHeight);
+    float y = border + (cellHeight * 0.5f) + (row * cellHeight);
     return new PVector(x, y);
   }
   
@@ -195,7 +195,7 @@ class Level extends GameComponent
     stroke(red);
     line(0, border, width, border);
     line(0, height - border, width, height - border);
-    for(int row = 0 ; row < rows ; row ++) //<>//
+    for(int row = 0 ; row < rows ; row ++) //<>// //<>//
     {
       for(int col = 0 ; col < cols ; col ++)
       {
