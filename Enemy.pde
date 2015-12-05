@@ -22,6 +22,7 @@ class Enemy extends GameComponent
    
    toWaypoint.normalize();
    gameObject.position.add(toWaypoint);
+   gameObject.rot = toWaypoint.heading() + HALF_PI;
     
     if (toWaypoint.mag() < 1.0f)
     {
@@ -30,7 +31,7 @@ class Enemy extends GameComponent
       {
         println("Removing enemy");
         score --;
-        gameObjects.remove(this);
+        this.gameObject.alive = false;
       }
     }     
   }

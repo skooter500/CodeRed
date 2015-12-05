@@ -21,6 +21,9 @@ int numTurrets = 3;
 int[] turretCount = new int[numTurrets];
 color[] turretColors = {purple, blue, red};
 
+float turretWidth = 0;
+float turretHUDStart = 0;
+
 void spawn()
 {
   if (frameCount % 60 == 0)
@@ -29,6 +32,7 @@ void spawn()
     GameObject ego = new GameObject();
     ego.addComponent(new Enemy(ego, red)); 
     ego.position = currentLevel.path.get(0).get();
+    ego.position.x -= currentLevel.cellWidth;
     gameObjects.add(ego);
   }
 }
@@ -124,14 +128,28 @@ void draw()
   background(0);
   stroke(0, 255, 255);  
   
-  for(GameObject gameObject:gameObjects)
+  for(int i = gameObjects.size() - 1 ; i >= 0 ; i --)
   {
-    gameObject.update();
-    gameObject.render();
+    GameObject go = gameObjects.get(i);
+    if (go.alive)
+    {
+      go.update();
+      go.render();
+    }
+    else
+    {
+      gameObjects.remove(i);
+    }
   }
   
   drawStats();
   spawn();
+}
+
+void mousePressed()
+{
+  // Check
+  if (mouseY > 
 }
 
 void keyPressed()
