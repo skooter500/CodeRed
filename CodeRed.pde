@@ -160,6 +160,14 @@ void draw()
 
 void mouseClicked()
 {
+  // Check are we dropping a turret
+  if (mouseTurret != null)
+  {
+    ((Turret)mouseTurret.components.get(1)).hud = false;
+    mouseTurret.components.remove(2);
+    mouseTurret = null;
+  }
+  
   float startX = turretHUDx;
   float gap = turretWidth * 1.5f;
   
@@ -174,7 +182,11 @@ void mouseClicked()
       {
         turretCount[turretIndex] --;
         mouseTurret = new GameObject();
-        
+        Turret t = new Turret(mouseTurret, true, turretColors[turretIndex]);
+        t.initialize();
+        mouseTurret.addComponent(t);
+        mouseTurret.addComponent(new MouseFollow(mouseTurret));        
+        gameObjects.add(mouseTurret);        
       }      
     }    
   }
