@@ -15,16 +15,38 @@ color purple = color(215, 30, 220);
 
 int CENTRED = -1;
 int score = 0;
+Level currentLevel;
+float border;
+int numTurrets = 3;
+int[] turretCount = new int[numTurrets];
+color[] turretColors = {purple, blue, red};
 
 void setup()
 {
   size(600, 600);
   
-  GameObject level = new GameObject();
+  border = 60;    
+    
   
-  level.addComponent(new Level(level, "level1.txt"));
+  GameObject level = new GameObject();
+  currentLevel = new Level(level, "level1.txt");
+  
+  level.addComponent(currentLevel);
   gameObjects.add(level);
- 
+    
+  for(int i = 0 ; i < numTurrets ; i ++)
+  {
+    // Add the HUD turrents
+    GameObject tgo = new GameObject();
+    
+    Turret t = new Turret(tgo, true, turretColors[i]);
+    tgo.addComponent(t);
+    tgo.position.x = 40 + (i * 80);
+    tgo.position.y = height - (border / 2);    
+    gameObjects.add(tgo);
+  }
+  
+  
   /*ship = new GameObject();
   ship.addComponent(new ShipDrawer(ship, 20.0f, 20.0f));
   ship.addComponent(new KeyMovement(ship, 'W', 'A', 'D'));
@@ -73,7 +95,16 @@ void initialize()
 void drawStats()
 {
   stroke(green);
-  printText("Score: " + score, font_size.small, 10, 10);
+  printText("Score: " + score, font_size.small, 10, 20);
+  
+  // Draw the turret stats
+  float y = height - 40; 
+   for(int i = 0 ; i < numTurrets ; i ++)
+   {
+     stroke(turretColors[i]);
+     float x = 60 + (i * 80);
+     printText("x" + turretCount[i], font_size.small, (int)x, (int)y);
+   }
 }
 
 

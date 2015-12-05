@@ -1,10 +1,12 @@
 class PolyLine extends GameComponent
 {
   color c;
+  ArrayList<PVector> vertices = new ArrayList<PVector>();
   
   PolyLine(GameObject gameObject, color c)
   {
     super(gameObject);
+    this.c = c;
   }
   
   void render()

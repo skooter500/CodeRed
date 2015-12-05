@@ -3,14 +3,47 @@ class Level extends GameComponent
   float cellWidth;
   float cellHeight;
   int rows, cols;
+  int baseRow, baseCol;
+  int startRow, startCol;
   String fileName;
   int[][] board;
-  float border;
+  
+  ArrayList<PVector> enemyPath = new ArrayList<PVector>(); 
   
   Level(GameObject gameObject, String fileName)
   {
     super(gameObject);
     this.fileName = fileName;
+  }
+  
+  void calculateEnemyPath()
+  {
+    enemyPath.clear();
+    // Search the edges for the start cell
+    boolean found = true;
+    startRow = 0;
+    startCol = 0;
+    for(startRow = 0 ; startRow < rows ; startRow ++)
+    {
+      if (getCell(row, 0) == 1)
+      {
+        found = true;
+        col = 0;
+        break;
+      }
+      if (getCell(row, cols - 1) == 1)
+      {
+        found = true;
+        col = cols - 1;
+        break;
+      }
+    }
+    
+    // Now find the path to the end cell
+    int row = startRow, col = startCol;
+    while (row != baseRow && col != baseCol)
+    {
+    }    
   }
   
   void initialize()
@@ -22,7 +55,6 @@ class Level extends GameComponent
     
     board = new int[rows][cols];
     
-    border = height * 0.1f;    
     cellWidth = width / cols;
     cellHeight = (height - (border * 2.0f)) / rows;    
         
@@ -53,7 +85,7 @@ class Level extends GameComponent
     float x, y;
     x = col * cellWidth;
     y = border + (row * cellHeight);
-
+ //<>//
     // Top
     if (getCell(row - 1, col) == 0)
     {
@@ -81,11 +113,10 @@ class Level extends GameComponent
   }
   
   void render()
-  {   
-    
+  {       
     stroke(red);
     line(0, border, width, border);
-    line(0, height - border, width, height - border); //<>//
+    line(0, height - border, width, height - border);
     for(int row = 0 ; row < rows ; row ++) //<>//
     {
       for(int col = 0 ; col < cols ; col ++)
