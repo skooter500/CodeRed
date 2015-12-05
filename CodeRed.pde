@@ -5,6 +5,7 @@ float timeDelta = 1.0f / 60.0f;
 
 boolean[] keys = new boolean[526];
 ArrayList<GameObject> gameObjects = new ArrayList<GameObject>();
+ArrayList<GameObject> enemies = new ArrayList<GameObject>();
 MovingLetters[] letters = new MovingLetters[3];
 
 color red = color(210, 10, 11);
@@ -36,6 +37,7 @@ void spawn()
     ego.position = currentLevel.path.get(0).get();
     ego.position.x -= currentLevel.cellWidth;
     gameObjects.add(ego);
+    enemies.add(ego);
   }
 }
 
@@ -143,15 +145,8 @@ void draw()
   for(int i = gameObjects.size() - 1 ; i >= 0 ; i --)
   {
     GameObject go = gameObjects.get(i);
-    if (go.alive)
-    {
-      go.update();
-      go.render();
-    }
-    else
-    {
-      gameObjects.remove(i);
-    }
+    go.update();
+    go.render();
   }
   
   drawStats();

@@ -3,6 +3,7 @@ class Enemy extends GameComponent
   PolyLine polyLine;
   int currentWaypoint = 0;
   PVector velocity;
+  int health;
   
   Enemy(GameObject gameObject, color c)
   {
@@ -10,6 +11,7 @@ class Enemy extends GameComponent
     polyLine = new PolyLine(gameObject, c);
     gameObject.addComponent(polyLine);
     velocity = new PVector();
+    health = 3;
     initialize();
   }
   
@@ -31,7 +33,8 @@ class Enemy extends GameComponent
       {
         println("Removing enemy");
         score --;
-        this.gameObject.alive = false;
+        gameObjects.remove(this.gameObject);
+        enemies.remove(this.gameObject);
       }
     }     
   }
