@@ -62,9 +62,8 @@ class Level extends GameComponent
     while (! found)
     {
       path.add(cellToScreen(row, col));
-      if ((row == baseRow && col == baseCol) || path.size() == 14)
+      if ((row == baseRow && col == baseCol))
       {
-        println("Found!: " + baseRow + " " + baseCol);
         found = true;
         continue;
       }

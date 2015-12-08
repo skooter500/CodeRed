@@ -81,7 +81,7 @@ class Turret extends GameComponent
   void initialize()
   { //<>//
     float radius = turretWidth * 0.3f;    //<>//
-    int sides = 8;
+    int sides = 5;
     float thetaInc = TWO_PI / (float) sides;
     float lastX = 0, lastY = - radius;
     float x, y;

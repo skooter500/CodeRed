@@ -27,7 +27,7 @@ Level currentLevel;
 float border;
 int numTurrets = 3;
 int[] turretCount = new int[numTurrets];
-color[] turretColors = {purple, blue, red};
+color[] turretColors = {purple, lightBlue, red};
 
 float turretWidth = 0;
 float turretHUDx = 0;
@@ -114,14 +114,14 @@ void playSound(AudioPlayer sound, boolean loop)
 void setup()
 {
   fullScreen();
-  
+  //size(600, 600);
   minim = new Minim(this);  
   
   explosionSound = minim.loadFile("exp.wav");
   shootSound = minim.loadFile("shoot.wav");
   backgroundSound = minim.loadFile("drumbedtrack1.mp3");
   
-  //size(600, 600);
+  //size(600, 600, OPENGL);
   
   border = 60;    
   turretWidth = 60;
@@ -133,7 +133,7 @@ void setup()
   turretCount[2] = 10;
       
   GameObject level = new GameObject();
-  currentLevel = new Level(level, "level1.txt");
+  currentLevel = new Level(level, "level2.txt");
   
   level.addComponent(currentLevel);
   gameObjects.add(level);
@@ -236,6 +236,7 @@ void draw()
   switch(gameState)
   {
     case 0:
+      splash();
       splash();
       break;
     case 1:
